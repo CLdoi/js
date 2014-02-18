@@ -25,8 +25,7 @@ $(document).ready(function(){
     function setDaysByWeek(y, m){
         var list = [];
 
-        // 月をまたぐことがあるので、余分にループさせる
-        for (var i = 1; i <= 32; i++) (function(date){
+        for (var i = 1; i <= 31; i++) (function(date){
             var week = date.getDay(),
                 month = date.getMonth();
 
