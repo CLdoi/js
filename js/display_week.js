@@ -22,53 +22,24 @@ $(document).ready(function(){
 
 
     /* 計算処理（内部） */
-    function setDaysByWeek(myY, myM){
-        var myDate = new Date(myY, myM);//その年月の1日を取得
-        var myWeek = myDate.getDay();//1日の曜日を取得
+    function setDaysByWeek(y, m){
+        var list = [];
 
-        var myMTbl= new Array(31,28,31,30,31,30,31,31,30,31,30,31);
-        //うるう年なら2月を29日にする
-        if (((myY%4)==0 && (myY%100)!=0) || (myY%400)==0){
-            myMTbl[1] = 29;
-        }
+        // 月をまたぐことがあるので、余分にループさせる
+        for (var i = 1; i <= 32; i++) (function(date){
+            var week = date.getDay(),
+                month = date.getMonth();
 
-        var tmpWeek = myWeek;//初期値は1日の曜日に設定
-        var resultArray = new Array();
+            if (month !== m) return;
+            if (week === selectWeek) list.push(date);
+        })(new Date(y, m, i), list);
 
-        for(var tmpDay=1; tmpDay<=myMTbl[myM]; tmpDay++){
-            //週末（土日）なら配列に格納
-            if(tmpWeek == selectWeek){
-                resultArray.push(tmpDay);
+        // 指定された曜日の日にちを設定する
+        $('#days').children().remove();
+        list.forEach(
+            function(v){
+                $('#days').append($('<option>').val(v.getDate()).html(v.getDate()));
             }
-            //次の日へ（配列の末尾になったら0に戻す）
-            tmpWeek++;
-            if(tmpWeek > 6){
-                tmpWeek = 0;
-            }
-        }
-        var selObj=document.getElementById("days");
-        var length=selObj.childNodes.length-1;
-
-        if(length>0){
-            /* ノード削除：プルダウン初期化 */
-            /* デクリメントしながら、子ノードの末尾から削除 */
-            for(var i=length; i>0; i--){
-                var childObj=selObj.childNodes[i];
-                if(childObj.nodeName!=undefined){
-                    selObj.removeChild(childObj);
-                }
-            }
-        }
-
-        for(var i in resultArray){
-            var optObj=document.createElement("option");
-            if(navigator.userAgent.indexOf("MSIE")>-1){
-                optObj.innerText=resultArray[i];
-            }else{
-                optObj.textContent=resultArray[i];
-            }
-            /* ノード追加 */
-            selObj.appendChild(optObj);
-        }
+        );
     }
 });
