@@ -20,7 +20,6 @@ $(document).ready(function(){
         setDaysByWeek(myY, myM);
     });
 
-
     /* 計算処理（内部） */
     function setDaysByWeek(y, m){
         var list = [];
