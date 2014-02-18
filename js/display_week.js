@@ -31,7 +31,7 @@ $(document).ready(function(){
 
             if (month !== m) return;
             if (week === selectWeek) list.push(date);
-        })(new Date(y, m, i), list);
+        })(new Date(y, m, i));
 
         // 指定された曜日の日にちを設定する
         $('#days').children().remove();
